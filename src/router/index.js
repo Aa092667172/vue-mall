@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'mallHome',
+    component: () => import('../components/mallHome.vue')
+    // redirect: { name: 'mallHome' },
+    // children: [{
+    //   path: '/test',
+    //   name: 'mallHome',
+    //   component: () => import('../components/mallHome.vue')
+    // }]
   },
   {
     path: '/about',
@@ -21,6 +27,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
 
