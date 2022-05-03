@@ -4,7 +4,7 @@
          mall商品列表
         </h1>
         <div>
-          <seachButton/>
+          <searchButton/>
         </div>
         <div>
           此次跳過的商品數為:{{data.offset}}
@@ -54,14 +54,16 @@
 <script>
 
 import axios from 'axios'
-import seachButton from '@/components/seachButton.vue'
+import searchButton from '@/components/searchButton.vue'
 
 export default {
-  component: seachButton,
   data () {
     return {
       data: ''
     }
+  },
+  components: {
+    searchButton: searchButton
   },
   async created () {
     try {

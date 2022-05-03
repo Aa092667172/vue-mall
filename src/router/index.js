@@ -6,8 +6,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'mallHome',
-    component: () => import('../views/mallHome.vue')
+    name: 'MallHome',
+    component: () => import('../views/MallHome.vue')
     // redirect: { name: 'mallHome' },
     // children: [{
     //   path: '/test',
