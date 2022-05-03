@@ -4,8 +4,7 @@
          mall商品列表
         </h1>
         <div>
-          <input type="text" v-model="inputValue" placeholder="搜尋關鍵字"/>
-          <input type="button" v-on:click ="selectKeyWord()" value="送出"/>
+          <seachButton/>
         </div>
         <div>
           此次跳過的商品數為:{{data.offset}}
@@ -38,7 +37,9 @@
                     <td data-th="商品編號">{{product.productId}}</td>
                     <td data-th="商品名稱">{{product.productName}}</td>
                     <td data-th="商品種類">{{product.category}}</td>
-                    <!-- <td><img src="http://i2.kknews.cc/Iu51GEHA6amYfSPA9vHea0cSMD6QXYUIvCf6FAuV8go/0.jpg"/></td> -->
+                    <td>
+                      <img :src="product.imageUrl"/>
+                    </td>
                     <td data-th="商品價錢">{{product.price}}</td>
                     <td data-th="商品庫存">{{product.stock}}</td>
                     <td data-th="商品描述">{{!product.description?'-':product.description}}</td>
@@ -53,25 +54,21 @@
 <script>
 
 import axios from 'axios'
+import seachButton from '@/components/seachButton.vue'
 
 export default {
+  component: seachButton,
   data () {
     return {
-      data: '',
-      inputValue: ''
+      data: ''
     }
   },
   async created () {
     try {
-      this.data = await (await axios.get('/products')).data
+      this.data = (await axios.get('http://localhost:8081/products')).data
     } catch (e) {
     } finally {
       console.log(this.data)
-    }
-  },
-  methods: {
-    selectKeyWord () {
-      alert(this.inputValue)
     }
   }
 }
