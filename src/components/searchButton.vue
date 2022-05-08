@@ -1,7 +1,11 @@
 <template>
      <div>
-          <input type="text" v-model="inputValue" placeholder="搜尋關鍵字"/>
-          <input type="button" @click ="selectKeyWord" value="送出"/>
+        <el-col :offset="6" :span="10" >
+          <el-input v-model="inputValue" placeholder="请输入内容"/>
+        </el-col>
+        <el-col :span="2" >
+          <el-button type="button" @click ="selectKeyWord" icon="el-icon-search">搜索</el-button>
+        </el-col>
     </div>
 </template>
 
@@ -13,7 +17,7 @@ export default {
   data () {
     return {
       inputValue: '',
-      searchData: ''
+      total: ''
     }
   },
   methods: {
@@ -24,7 +28,7 @@ export default {
             { search: this.inputValue }
         }
         ).then(res => {
-          this.searchData = res.data
+          this.total = res.data
           console.log(this.searchData)
         })
       } catch (error) {
