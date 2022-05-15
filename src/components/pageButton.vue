@@ -3,7 +3,7 @@
         <el-pagination class="center"
         background
         layout="prev, pager, next"
-        :total="1000" >
+        :total="10" >
         </el-pagination>
     </div>
 </template>
@@ -11,13 +11,18 @@
 <script>
 
 export default {
+  data () {
+    return {
+      total: ''
+    }
+  }
 }
 </script>
 
 <style scoped>
 
-.center {
-  text-align:center;
-}
+  .center {
+    text-align:center;
+  }
 
 </style>
