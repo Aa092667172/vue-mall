@@ -7,16 +7,15 @@
       <searchButton v-model="searchValue" @click="selectKeyWord"/>
     </div>
     <br />
-    {{ data }}
     <br />
-    <div>此次跳過的商品數為:{{ data.offset }}</div>
-    <div>此次顯示的商品數為:{{ data.limit }}</div>
-    <div>此次取得的商品總數為:{{ data.total }}</div>
+    <div>此次跳過的商品數為:{{ offset }}</div>
+    <div>此次顯示的商品數為:{{ limit }}</div>
+    <div>此次取得的商品總數為:{{ total }}</div>
     <el-row tpye="flex">
       <el-col
         :offset="1"
         :span="5"
-        v-for="(product, i) in data.results"
+        v-for="(product, i) in productList"
         :key="i"
       >
         <div class="product-content">
@@ -52,7 +51,7 @@ import pageButton from '@/components/pageButton.vue'
 export default {
   data () {
     return {
-      data: '',
+      productList: '',
       total: '',
       searchValue: '',
       offset: '',
@@ -65,14 +64,18 @@ export default {
   },
   async created () {
     try {
-      axios.get('http://localhost:8081/products')
-        .then(res => {
-          const data = res.data
-          this.data = data
-          this.total = data.total
-          this.offset = data.offset
-          this.limit = data.limit
-        })
+      const { data } = await (axios.get('http://localhost:8081/products'))
+      this.productList = data.results
+      this.total = data.total
+      this.offset = data.offset
+      this.limit = data.limit
+      // .then(res => {
+      //   const data = res.data
+      //   this.data = data
+      //   this.total = data.total
+      //   this.offset = data.offset
+      //   this.limit = data.limit
+      // })
     } catch (e) {
       console.log(e)
     } finally {
