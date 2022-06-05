@@ -4,148 +4,162 @@
       <h1>mall商品列表</h1>
     </div>
     <div>
-      <searchButton v-model="searchValue" @click="selectKeyWord"/>
+      <searchButton v-model="searchValue" @click="selectKeyWord(1, 'search')"/>
     </div>
     <br />
     <br />
-    <div>此次跳過的商品數為:{{ offset }}</div>
-    <div>此次顯示的商品數為:{{ limit }}</div>
-    <div>此次取得的商品總數為:{{ total }}</div>
-    <el-row tpye="flex">
-      <el-col
-        :offset="1"
-        :span="5"
-        v-for="(product, i) in productList"
+    <div class="layout">
+      <div
+        v-for="(item ,i) in productList"
         :key="i"
+        class="outside"
       >
-        <div class="product-content">
-          <el-col :span="24">
-            <img :src="product.imageUrl" style="width: 100px; height: 100px" />
-          </el-col>
-          <div>
-            {{ product.createDate }}
-          </div>
-          <div>
-            {{ product.productName }}
-          </div>
-          <div>
-            {{ !product.description ? "-" : product.description }}
-          </div>
-          <div>
-            {{ product.price }}
+        <div class="content">
+          <img class="imagecss" :src="item.imageUrl"/>
+          <div class="text">
+            <div class="title">
+              {{ item.productName }}
+            </div>
+            <div class="content2">
+              {{ item.description }}
+            </div>
+            <div class="price">
+              $ {{ item.price }}
+            </div>
           </div>
         </div>
-      </el-col>
-    </el-row>
-    <el-col :span="24">
-      <pageButton v-model="searchValue" ></pageButton>
-    </el-col>
+        <div class="line"></div>
+      </div>
+    </div>
+    <div class="pagecss">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="1"
+        :current-page.sync="current"
+        @current-change="selectKeyWord($event)"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import searchButton from '@/components/searchButton.vue'
-import pageButton from '@/components/pageButton.vue'
 
 export default {
+  components: {
+    searchButton
+  },
   data () {
     return {
       productList: '',
-      total: '',
+      total: 0,
       searchValue: '',
-      offset: '',
-      limit: ''
+      offset: 0,
+      limit: 0,
+      current: 1
     }
   },
-  components: {
-    searchButton,
-    pageButton
+  methods: {
+    async selectKeyWord (current, type) {
+      try {
+        const { data } = await axios.get('http://localhost:8081/products',
+          { params: { search: this.searchValue, offset: current - 1, limit: this.limit } }
+        )
+        this.productList = data.results
+        this.total = data.total
+        this.offset = data.offset
+        this.limit = data.limit
+        if (type === 'search') {
+          this.current = 1
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
   },
   async created () {
     try {
-      const { data } = await (axios.get('http://localhost:8081/products'))
+      const { data } = await axios.get('http://localhost:8081/products',
+        { params: { offset: 0, limit: 1 } }
+      )
       this.productList = data.results
       this.total = data.total
       this.offset = data.offset
       this.limit = data.limit
-      // .then(res => {
-      //   const data = res.data
-      //   this.data = data
-      //   this.total = data.total
-      //   this.offset = data.offset
-      //   this.limit = data.limit
-      // })
     } catch (e) {
       console.log(e)
-    } finally {
-      console.log(this.data)
-    }
-  },
-  methods: {
-    selectKeyWord () {
-      try {
-        console.log(this.searchValue, '這裡')
-        axios.get('http://localhost:8081/products', {
-          params:
-            { search: this.searchValue }
-        }).then(res => {
-          this.data = res.data
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  },
-  computed: {
-    totalPage: {
     }
   }
 }
 </script>
 
 <style scoped>
-.center {
-  text-align: center;
-}
-.col {
-  width: 10%;
-  left: 20px;
-  height: 20px;
-}
-.img {
-  width: 250px;
+.layout {
+  padding: 50px 0;
+  display: grid;
+  grid-template-columns: 300px 300px 300px 300px;
+  grid-auto-rows: 350px;
+  gap: 20px;
+  justify-content: center;
 }
 
-.el-row {
-  margin-bottom: 40px;
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-  text-align: center;
-}
-.product-content {
-  border-radius: 4px;
-  min-height: 36px;
-  text-align: center;
-  border-width: 3px;
-  border-style: solid;
-  border-color: #1f1f1f;
-  padding: 5px;
+.outside {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
+.content {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
+
+.imagecss {
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+.text {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 30px;
+  color: rgb(53, 53, 53);
+}
+
+.content2 {
+  flex: 1;
+  color: rgb(105, 105, 105);
+}
+
+.price {
+  color: orange;
+  font-size: 20px;
+}
+
+.line {
+  height: 10px;
+  width: 100%;
+  background: rgb(173, 203, 255);
+}
+
+.pagecss {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
 </style>
