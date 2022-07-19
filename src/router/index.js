@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'MallHome',
-    component: () => import('../views/MallHome.vue')
+    component: () => import('../views/mallHome.vue')
     // redirect: { name: 'mallHome' },
     // children: [{
     //   path: '/test',
