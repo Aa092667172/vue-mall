@@ -14,19 +14,19 @@
         :key="i"
         class="outside"
       >
-        <div class="content">
-          <img class="imagecss" :src="item.imageUrl"/>
-          <div class="text">
-            <div class="title">
-              {{ item.productName }}
+        <div class="content" v-on:click="showDetail(item)">
+            <img class="imagecss" :src="item.imageUrl"/>
+            <div class="text" >
+              <div class="title">
+                {{ item.productName }}
+              </div>
+              <div class="content2">
+                {{ item.description }}
+              </div>
+              <div class="price">
+                  $ {{ item.price }}
+              </div>
             </div>
-            <div class="content2">
-              {{ item.description }}
-            </div>
-            <div class="price">
-              $ {{ item.price }}
-            </div>
-          </div>
         </div>
         <div class="line"></div>
       </div>
@@ -79,6 +79,14 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    showDetail (item) {
+      this.$router.push({
+        path: '/Mall/productDetail/' + item.productId,
+        query: {
+          url: item.imageUrl
+        }
+      })
     }
   },
   async created () {

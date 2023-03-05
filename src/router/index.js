@@ -14,6 +14,11 @@ const routes = [
     //   name: 'mallHome',
     //   component: () => import('../components/mallHome.vue')
     // }]
+  },
+  {
+    path: '/Mall/productDetail/:id',
+    name: 'productDetail',
+    component: () => import('../views/productDetail.vue')
   }
 ]
 
