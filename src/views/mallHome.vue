@@ -36,7 +36,7 @@
         background
         layout="prev, pager, next"
         :total="total"
-        :page-size="1"
+        :page-size="5"
         :current-page.sync="current"
         @current-change="selectKeyWord($event)"
       >
@@ -66,7 +66,7 @@ export default {
   methods: {
     async selectKeyWord (current, type) {
       try {
-        const { data } = await axios.get('http://localhost:8081/products',
+        const { data } = await axios.get('http://localhost:8080/products',
           { params: { search: this.searchValue, offset: current - 1, limit: this.limit } }
         )
         this.productList = data.results
@@ -83,8 +83,8 @@ export default {
   },
   async created () {
     try {
-      const { data } = await axios.get('http://localhost:8081/products',
-        { params: { offset: 0, limit: 1 } }
+      const { data } = await axios.get('http://localhost:8080/products',
+        { params: { offset: 0, limit: 5 } }
       )
       this.productList = data.results
       this.total = data.total
@@ -154,6 +154,13 @@ export default {
   height: 10px;
   width: 100%;
   background: rgb(173, 203, 255);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
 }
 
 .pagecss {

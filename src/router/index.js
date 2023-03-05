@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/Mall',
     name: 'MallHome',
     component: () => import('../views/mallHome.vue')
     // redirect: { name: 'mallHome' },
