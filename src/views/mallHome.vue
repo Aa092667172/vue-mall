@@ -67,7 +67,7 @@ export default {
     async selectKeyWord (current, type) {
       try {
         const { data } = await axios.get('http://localhost:8080/products',
-          { params: { search: this.searchValue, offset: current - 1, limit: this.limit } }
+          { params: { search: this.searchValue, offset: ((current - 1) * 5), limit: this.limit } }
         )
         this.productList = data.results
         this.total = data.total
